@@ -22,7 +22,7 @@ import { vh } from './src/utils/units';
 import colors from './src/utils/colors';
 
 const STATUS_BAR_HEIGHT = getStatusBarHeight();
-const HEADER_HEIGHT = 44 + STATUS_BAR_HEIGHT;
+const HEADER_HEIGHT = 60 + STATUS_BAR_HEIGHT;
 const HERO_HEIGHT = vh(40);
 const TOTAL_HEIGHT = HEADER_HEIGHT + HERO_HEIGHT;
 const INPUT_CONTAINER_HEIGHT = 40;
@@ -82,7 +82,7 @@ const App = props => {
 
     const animatedTranslateYInputContainer = scrollYValue.interpolate({
         inputRange: [-HERO_HEIGHT, 0, HERO_HEIGHT],
-        outputRange: [HERO_HEIGHT * 2, HERO_HEIGHT - 15, -10],
+        outputRange: [HERO_HEIGHT * 2, HERO_HEIGHT, 0],
         extrapolateRight: 'clamp',
         extrapolateLeft: 'extend',
         useNativeDriver: true,
