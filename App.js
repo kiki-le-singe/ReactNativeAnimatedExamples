@@ -65,7 +65,7 @@ const App = props => {
         useNativeDriver: true,
     });
 
-    const animatedScaleMaineHeader = scrollYValue.interpolate({
+    const animatedScaleIconContainer = scrollYValue.interpolate({
         inputRange: [0, HERO_HEIGHT / 2, HERO_HEIGHT - INPUT_CONTAINER_HEIGHT],
         outputRange: [1, 1, 0],
         extrapolate: 'clamp',
@@ -82,7 +82,7 @@ const App = props => {
 
     const animatedTranslateYInputContainer = scrollYValue.interpolate({
         inputRange: [-HERO_HEIGHT, 0, HERO_HEIGHT],
-        outputRange: [HERO_HEIGHT * 2, HERO_HEIGHT - 10, 0],
+        outputRange: [HERO_HEIGHT * 2, HERO_HEIGHT - 15, -10],
         extrapolateRight: 'clamp',
         extrapolateLeft: 'extend',
         useNativeDriver: true,
@@ -151,7 +151,7 @@ const App = props => {
                     {
                         transform: [
                             {
-                                scale: animatedScaleMaineHeader,
+                                scale: animatedScaleIconContainer,
                             },
                         ],
                     },
@@ -301,18 +301,18 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         position: 'absolute',
-        top: STATUS_BAR_HEIGHT,
+        top: STATUS_BAR_HEIGHT + 10,
         right: 20,
         zIndex: 10,
     },
     icon: {
-        width: 44,
-        height: 44,
+        width: 30,
+        height: 30,
         backgroundColor: colors.grey,
     },
     inputContainer: {
         position: 'absolute',
-        top: STATUS_BAR_HEIGHT,
+        top: STATUS_BAR_HEIGHT + 5,
         zIndex: 10,
         height: INPUT_CONTAINER_HEIGHT,
         width: '100%',
