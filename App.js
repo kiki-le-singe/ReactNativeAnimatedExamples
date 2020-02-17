@@ -6,16 +6,16 @@
  * @flow
  */
 
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, { useState, useEffect } from 'react';
-import { View, Image, StyleSheet, Animated, TextInput } from 'react-native';
+import {
+    View,
+    Image,
+    StyleSheet,
+    Animated,
+    TextInput,
+    TouchableOpacity,
+    Alert,
+} from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { vh } from './src/utils/units';
@@ -26,8 +26,6 @@ const HEADER_HEIGHT = 44 + STATUS_BAR_HEIGHT;
 const HERO_HEIGHT = vh(40);
 const TOTAL_HEIGHT = HEADER_HEIGHT + HERO_HEIGHT;
 const INPUT_CONTAINER_HEIGHT = 40;
-
-// const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 const App = props => {
     const [data, setData] = useState([]);
@@ -67,6 +65,13 @@ const App = props => {
         useNativeDriver: true,
     });
 
+    const animatedScaleMaineHeader = scrollYValue.interpolate({
+        inputRange: [0, HERO_HEIGHT / 2, HERO_HEIGHT - INPUT_CONTAINER_HEIGHT],
+        outputRange: [1, 1, 0],
+        extrapolate: 'clamp',
+        useNativeDriver: true,
+    });
+
     const animatedTranslateYTitle = scrollYValue.interpolate({
         inputRange: [-HERO_HEIGHT, 0, HERO_HEIGHT],
         outputRange: [HERO_HEIGHT, HERO_HEIGHT / 2, 0],
@@ -77,7 +82,7 @@ const App = props => {
 
     const animatedTranslateYInputContainer = scrollYValue.interpolate({
         inputRange: [-HERO_HEIGHT, 0, HERO_HEIGHT],
-        outputRange: [HERO_HEIGHT * 2 + INPUT_CONTAINER_HEIGHT, HERO_HEIGHT, 0],
+        outputRange: [HERO_HEIGHT * 2, HERO_HEIGHT - 10, 0],
         extrapolateRight: 'clamp',
         extrapolateLeft: 'extend',
         useNativeDriver: true,
@@ -120,13 +125,6 @@ const App = props => {
     const renderItem = ({ index }) => {
         const paddingTop = index === 0 ? 20 : 0;
 
-        // return (
-        //     <TextInput
-        //         style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-        //         onChangeText={text => onChangeText(text)}
-        //         value={value}
-        //     />
-        // );
         return (
             <View style={[styles.itemContainer, { paddingTop }]}>
                 <View style={styles.item} />
@@ -135,6 +133,7 @@ const App = props => {
     };
     const keyExtractor = (item, index) => `item_${index}`;
     const _onChangeText = text => onChangeText(text);
+    const onPress = () => Alert.alert('Hi!');
 
     useEffect(() => {
         const array = [];
@@ -146,6 +145,41 @@ const App = props => {
 
     return (
         <View style={styles.screen}>
+            <Animated.View
+                style={[
+                    styles.iconContainer,
+                    {
+                        transform: [
+                            {
+                                scale: animatedScaleMaineHeader,
+                            },
+                        ],
+                    },
+                ]}>
+                <TouchableOpacity onPress={onPress}>
+                    <View style={styles.icon} />
+                </TouchableOpacity>
+            </Animated.View>
+
+            <Animated.View
+                style={[
+                    styles.inputContainer,
+                    {
+                        transform: [
+                            {
+                                translateY: animatedTranslateYInputContainer,
+                            },
+                        ],
+                    },
+                ]}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Placeholder"
+                    onChangeText={_onChangeText}
+                    value={value}
+                />
+            </Animated.View>
+
             <Animated.View
                 style={[
                     styles.background,
@@ -199,41 +233,6 @@ const App = props => {
                     ]}>
                     Header Title
                 </Animated.Text>
-
-                <Animated.View
-                    style={[
-                        styles.inputContainer,
-                        {
-                            transform: [
-                                {
-                                    translateY: animatedTranslateYInputContainer,
-                                },
-                            ],
-                        },
-                    ]}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Placeholder"
-                        onChangeText={_onChangeText}
-                        value={value}
-                    />
-                </Animated.View>
-
-                {/* <AnimatedTextInput
-                    style={[
-                        styles.input,
-                        {
-                            transform: [
-                                {
-                                    translateY: animatedTranslateYInputContainer,
-                                },
-                            ],
-                        },
-                    ]}
-                    placeholder="Placeholder"
-                    onChangeText={_onChangeText}
-                    value={value}
-                /> */}
             </Animated.View>
 
             <View style={styles.container}>
@@ -300,11 +299,24 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: colors.grey,
     },
+    iconContainer: {
+        position: 'absolute',
+        top: STATUS_BAR_HEIGHT,
+        right: 20,
+        zIndex: 10,
+    },
+    icon: {
+        width: 44,
+        height: 44,
+        backgroundColor: colors.grey,
+    },
     inputContainer: {
+        position: 'absolute',
+        top: STATUS_BAR_HEIGHT,
+        zIndex: 10,
         height: INPUT_CONTAINER_HEIGHT,
         width: '100%',
         paddingHorizontal: 10,
-        marginBottom: 10,
     },
     input: {
         width: '100%',
