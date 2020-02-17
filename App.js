@@ -137,7 +137,7 @@ const App = props => {
 
     useEffect(() => {
         const array = [];
-        for (let i = 1; i <= 50; i++) {
+        for (let i = 1; i <= 30; i++) {
             array.push(i);
         }
         setData(array);
