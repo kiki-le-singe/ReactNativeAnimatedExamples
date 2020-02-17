@@ -245,6 +245,10 @@ const App = props => {
                     data={data}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
+                    keyboardDismissMode="on-drag"
+                    initialNumToRender={8}
+                    maxToRenderPerBatch={15}
+                    updateCellsBatchingPeriod={30}
                 />
             </View>
         </View>
