@@ -17,7 +17,6 @@ import {
     Alert,
 } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { vh } from './src/utils/units';
 import colors from './src/utils/colors';
@@ -158,11 +157,7 @@ const App = props => {
                     },
                 ]}>
                 <TouchableOpacity onPress={onPress}>
-                    <Icon
-                        name="user-astronaut"
-                        size={30}
-                        color={colors.white}
-                    />
+                    <View style={styles.icon} />
                 </TouchableOpacity>
             </Animated.View>
 
@@ -309,6 +304,11 @@ const styles = StyleSheet.create({
         top: STATUS_BAR_HEIGHT,
         right: 20,
         zIndex: 10,
+    },
+    icon: {
+        width: 44,
+        height: 44,
+        backgroundColor: colors.grey,
     },
     inputContainer: {
         position: 'absolute',
