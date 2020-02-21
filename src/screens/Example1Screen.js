@@ -307,10 +307,11 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         position: 'absolute',
+        left: 0,
+        right: 0,
         top: STATUS_BAR_HEIGHT + 5,
         zIndex: 10,
         height: INPUT_CONTAINER_HEIGHT,
-        width: '100%',
         paddingHorizontal: 10,
     },
     input: {
