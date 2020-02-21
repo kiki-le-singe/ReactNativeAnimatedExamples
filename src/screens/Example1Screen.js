@@ -272,7 +272,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     headerText: {
-        position: 'absolute',
         fontSize: 28,
         color: colors.white,
     },
