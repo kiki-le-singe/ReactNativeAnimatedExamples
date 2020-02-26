@@ -79,6 +79,16 @@ const Example1Screen = ({ navigation }) => {
         useNativeDriver: true,
     });
 
+    const animatedWidthInputContainer = scrollYValue.interpolate({
+        inputRange: [
+            0,
+            TOTAL_HEIGHT / 2,
+            TOTAL_HEIGHT - (INPUT_CONTAINER_HEIGHT + HEADER_HEIGHT),
+        ],
+        outputRange: ['100%', '100%', '85%'],
+        extrapolate: 'clamp',
+    });
+
     const animatedOpacityOverlay = scrollYValue.interpolate({
         inputRange: [0, TOTAL_HEIGHT],
         outputRange: [1, 0],
@@ -138,22 +148,6 @@ const Example1Screen = ({ navigation }) => {
         <View style={styles.screen}>
             <Animated.View
                 style={[
-                    styles.iconContainer,
-                    {
-                        transform: [
-                            {
-                                scale: animatedScaleIconContainer,
-                            },
-                        ],
-                    },
-                ]}>
-                <TouchableOpacity onPress={onPress}>
-                    <View style={styles.icon} />
-                </TouchableOpacity>
-            </Animated.View>
-
-            <Animated.View
-                style={[
                     styles.inputContainer,
                     {
                         transform: [
@@ -161,6 +155,7 @@ const Example1Screen = ({ navigation }) => {
                                 translateY: animatedTranslateYInputContainer,
                             },
                         ],
+                        width: animatedWidthInputContainer,
                     },
                 ]}>
                 <TextInput
@@ -224,6 +219,22 @@ const Example1Screen = ({ navigation }) => {
                     ]}>
                     Header Title
                 </Animated.Text>
+
+                <Animated.View
+                    style={[
+                        styles.iconContainer,
+                        {
+                            // transform: [
+                            //     {
+                            //         scale: animatedScaleIconContainer,
+                            //     },
+                            // ],
+                        },
+                    ]}>
+                    <TouchableOpacity onPress={onPress}>
+                        <View style={styles.icon} />
+                    </TouchableOpacity>
+                </Animated.View>
             </Animated.View>
 
             <View style={styles.container}>
