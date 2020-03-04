@@ -7,16 +7,16 @@ import {
     TextInput,
     TouchableOpacity,
 } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import { vh } from '../utils/units';
 import colors from '../utils/colors';
-
-const STATUS_BAR_HEIGHT = getStatusBarHeight();
-const HEADER_HEIGHT = 60 + STATUS_BAR_HEIGHT;
-const HERO_HEIGHT = vh(40);
-const TOTAL_HEIGHT = HEADER_HEIGHT + HERO_HEIGHT;
-const INPUT_CONTAINER_HEIGHT = 40;
+import SearchInput from '../components/SearchInput';
+import {
+    STATUS_BAR_HEIGHT,
+    HEADER_HEIGHT,
+    HERO_HEIGHT,
+    TOTAL_HEIGHT,
+    INPUT_CONTAINER_HEIGHT,
+} from '../constants';
 
 const Example1Screen = ({ navigation }) => {
     const [data, setData] = useState([]);
