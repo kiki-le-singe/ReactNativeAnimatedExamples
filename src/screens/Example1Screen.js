@@ -4,7 +4,6 @@ import {
     Image,
     StyleSheet,
     Animated,
-    TextInput,
     TouchableOpacity,
 } from 'react-native';
 
@@ -20,7 +19,6 @@ import {
 
 const Example1Screen = ({ navigation }) => {
     const [data, setData] = useState([]);
-    const [value, onChangeText] = useState('');
 
     const scrollYValue = new Animated.Value(0);
 
@@ -133,7 +131,6 @@ const Example1Screen = ({ navigation }) => {
         );
     };
     const keyExtractor = (item, index) => `item_${index}`;
-    const _onChangeText = text => onChangeText(text);
     const onPress = () => navigation.goBack();
 
     useEffect(() => {
@@ -146,25 +143,17 @@ const Example1Screen = ({ navigation }) => {
 
     return (
         <View style={styles.screen}>
-            <Animated.View
-                style={[
-                    styles.inputContainer,
-                    {
-                        transform: [
-                            {
-                                translateY: animatedTranslateYInputContainer,
-                            },
-                        ],
-                        width: animatedWidthInputContainer,
-                    },
-                ]}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Placeholder"
-                    onChangeText={_onChangeText}
-                    value={value}
-                />
-            </Animated.View>
+            <SearchInput
+                style={{
+                    ...styles.inputContainer,
+                    transform: [
+                        {
+                            translateY: animatedTranslateYInputContainer,
+                        },
+                    ],
+                    width: animatedWidthInputContainer,
+                }}
+            />
 
             <Animated.View
                 style={[
@@ -316,21 +305,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.grey,
     },
     inputContainer: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
         top: STATUS_BAR_HEIGHT + 5,
-        zIndex: 10,
-        height: INPUT_CONTAINER_HEIGHT,
-        paddingHorizontal: 10,
-    },
-    input: {
-        width: '100%',
-        height: '100%',
-        borderColor: colors.grey,
-        backgroundColor: colors.white,
-        borderWidth: 1,
-        paddingHorizontal: 10,
     },
 });
 
