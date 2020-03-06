@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/HomeScreen';
 import Example1Screen from './src/screens/Example1Screen';
 import Example2Screen from './src/screens/Example2Screen';
+import Example3Screen from './src/screens/Example3Screen';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,13 @@ const App = () => {
                         headerShown: false,
                     }}
                     component={Example2Screen}
+                />
+                <Stack.Screen
+                    name="Example3"
+                    options={{
+                        headerShown: false,
+                    }}
+                    component={Example3Screen}
                 />
             </Stack.Navigator>
         </NavigationContainer>
