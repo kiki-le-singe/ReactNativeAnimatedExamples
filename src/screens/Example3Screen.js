@@ -10,9 +10,11 @@ import {
     Image,
     Text,
     TouchableOpacity,
+    StatusBar,
 } from 'react-native';
 
 import colors from '../utils/colors';
+import wait from '../utils/wait';
 import {
     HEADER_BACKGROUND_HEIGHT,
     STATUS_BAR_HEIGHT,
@@ -22,6 +24,7 @@ import SearchInput from '../components/SearchInput';
 
 const Example3Screen = ({ navigation }) => {
     const [data, setData] = useState([]);
+    const [isScrollReachedTop, setIsScrollReachedTop] = useState(false);
 
     const scrollYAnimatedValue = new Animated.Value(0);
 
@@ -107,6 +110,21 @@ const Example3Screen = ({ navigation }) => {
         extrapolate: 'clamp',
     });
 
+    const onScrollListener = async event => {
+        const offsetY = event.nativeEvent.contentOffset.y;
+
+        await wait(5);
+
+        if (offsetY >= HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT) {
+            if (!isScrollReachedTop) {
+                setIsScrollReachedTop(true);
+            }
+        } else if (offsetY <= HEADER_HEIGHT + HEADER_HEIGHT) {
+            if (isScrollReachedTop) {
+                setIsScrollReachedTop(false);
+            }
+        }
+    };
     const onScroll = Animated.event(
         [
             {
@@ -115,7 +133,9 @@ const Example3Screen = ({ navigation }) => {
                 },
             },
         ],
-        // { useNativeDriver: true },
+        {
+            listener: onScrollListener,
+        },
     );
     const renderItem = ({ index }) => {
         return (
@@ -137,6 +157,11 @@ const Example3Screen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <StatusBar
+                barStyle={isScrollReachedTop ? 'dark-content' : 'light-content'}
+                animated
+            />
+
             <Animated.View
                 style={[
                     styles.header,
