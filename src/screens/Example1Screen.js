@@ -1,132 +1,146 @@
+/**
+ * @flow
+ */
+
 import React, { useState, useEffect } from 'react';
 import {
-    View,
-    Image,
     StyleSheet,
+    View,
     Animated,
+    Image,
+    Text,
     TouchableOpacity,
+    StatusBar,
 } from 'react-native';
 
 import colors from '../utils/colors';
-import SearchInput from '../components/SearchInput';
+import wait from '../utils/wait';
 import {
+    HEADER_BACKGROUND_HEIGHT,
     STATUS_BAR_HEIGHT,
     HEADER_HEIGHT,
-    HERO_HEIGHT,
-    TOTAL_HEIGHT,
-    INPUT_CONTAINER_HEIGHT,
 } from '../constants';
+import SearchInput from '../components/SearchInput';
 
 const Example1Screen = ({ navigation }) => {
     const [data, setData] = useState([]);
+    const [isScrollReachedTop, setIsScrollReachedTop] = useState(false);
 
-    const scrollYValue = new Animated.Value(0);
+    const scrollYAnimatedValue = new Animated.Value(0);
 
-    const animatedScaleBackground = scrollYValue.interpolate({
-        inputRange: [-TOTAL_HEIGHT, 0],
+    const animatedScaleHeaderBackground = scrollYAnimatedValue.interpolate({
+        inputRange: [-HEADER_BACKGROUND_HEIGHT, 0],
         outputRange: [2, 1],
         extrapolateRight: 'clamp',
         extrapolateLeft: 'extend',
-        useNativeDriver: true,
+        // useNativeDriver: true,
     });
-
-    const animatedScaleYBackground = scrollYValue.interpolate({
-        inputRange: [0, TOTAL_HEIGHT],
-        outputRange: [1, 0.5],
+    const animatedScaleYHeaderBackground = scrollYAnimatedValue.interpolate({
+        inputRange: [0, HEADER_BACKGROUND_HEIGHT],
+        outputRange: [1, 0.8],
         extrapolate: 'clamp',
-        useNativeDriver: true,
+        // useNativeDriver: true,
     });
+    const animatedTranslateYHeaderBackground = scrollYAnimatedValue.interpolate(
+        {
+            inputRange: [
+                -HEADER_BACKGROUND_HEIGHT,
+                0,
+                HEADER_BACKGROUND_HEIGHT,
+            ],
+            outputRange: [
+                HEADER_BACKGROUND_HEIGHT / 2,
+                0,
+                -HEADER_BACKGROUND_HEIGHT / 2,
+            ],
+            extrapolateRight: 'clamp',
+            extrapolateLeft: 'extend',
+            // useNativeDriver: true,
+        },
+    );
+    const animatedOpacityHeaderBackgroundOverlay = scrollYAnimatedValue.interpolate(
+        {
+            inputRange: [0, HEADER_BACKGROUND_HEIGHT / 2],
+            outputRange: [1, 0],
+            extrapolate: 'clamp',
+            // useNativeDriver: true,
+        },
+    );
 
-    const animatedTranslateYBackground = scrollYValue.interpolate({
-        inputRange: [-TOTAL_HEIGHT, 0, TOTAL_HEIGHT],
-        outputRange: [TOTAL_HEIGHT / 2, 0, -TOTAL_HEIGHT / 3],
-        // outputRange: [TOTAL_HEIGHT / 2, 0, -TOTAL_HEIGHT / 1.5],
-        extrapolateRight: 'clamp',
-        extrapolateLeft: 'extend',
-        useNativeDriver: true,
-    });
-
-    const animatedScaleTitle = scrollYValue.interpolate({
-        inputRange: [0, HERO_HEIGHT],
-        outputRange: [2, 0],
-        // outputRange: [2, 1],
+    const animatedScaleTitle = scrollYAnimatedValue.interpolate({
+        inputRange: [0, HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT],
+        outputRange: [1.5, 0],
         extrapolate: 'clamp',
-        useNativeDriver: true,
+        // useNativeDriver: true,
     });
 
-    const animatedScaleIconContainer = scrollYValue.interpolate({
-        inputRange: [0, HERO_HEIGHT / 2, HERO_HEIGHT - INPUT_CONTAINER_HEIGHT],
-        outputRange: [1, 1, 0],
-        extrapolate: 'clamp',
-        useNativeDriver: true,
-    });
-
-    const animatedTranslateYTitle = scrollYValue.interpolate({
-        inputRange: [-HERO_HEIGHT, 0, HERO_HEIGHT],
-        outputRange: [HERO_HEIGHT, HERO_HEIGHT / 2, 0],
-        extrapolateRight: 'clamp',
-        extrapolateLeft: 'extend',
-        useNativeDriver: true,
-    });
-
-    const animatedTranslateYInputContainer = scrollYValue.interpolate({
-        inputRange: [-HERO_HEIGHT, 0, HERO_HEIGHT],
-        outputRange: [HERO_HEIGHT * 2, HERO_HEIGHT, 0],
-        extrapolateRight: 'clamp',
-        extrapolateLeft: 'extend',
-        useNativeDriver: true,
-    });
-
-    const animatedWidthInputContainer = scrollYValue.interpolate({
+    const animatedBackgroundColorHeader = scrollYAnimatedValue.interpolate({
         inputRange: [
             0,
-            TOTAL_HEIGHT / 2,
-            TOTAL_HEIGHT - (INPUT_CONTAINER_HEIGHT + HEADER_HEIGHT),
+            HEADER_BACKGROUND_HEIGHT / 2,
+            HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
+        ],
+        outputRange: [colors.transparent, colors.transparent, colors.white],
+        extrapolate: 'clamp',
+    });
+
+    const animatedTranslateYInputContainer = scrollYAnimatedValue.interpolate({
+        inputRange: [
+            -HEADER_BACKGROUND_HEIGHT,
+            0,
+            HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
+        ],
+        outputRange: [
+            HEADER_BACKGROUND_HEIGHT * 2 - HEADER_HEIGHT,
+            HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
+            0,
+        ],
+        extrapolateRight: 'clamp',
+        extrapolateLeft: 'extend',
+        // useNativeDriver: true,
+    });
+
+    const animatedWidthInputContainer = scrollYAnimatedValue.interpolate({
+        inputRange: [
+            0,
+            HEADER_BACKGROUND_HEIGHT / 2,
+            HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
         ],
         outputRange: ['100%', '100%', '85%'],
         extrapolate: 'clamp',
     });
 
-    const animatedOpacityOverlay = scrollYValue.interpolate({
-        inputRange: [0, TOTAL_HEIGHT],
-        outputRange: [1, 0],
-        extrapolate: 'clamp',
-        useNativeDriver: true,
-    });
+    const onScrollListener = async event => {
+        const offsetY = event.nativeEvent.contentOffset.y;
 
-    const animatedBackgroundColorHeader = scrollYValue.interpolate({
-        inputRange: [
-            0,
-            TOTAL_HEIGHT / 2,
-            TOTAL_HEIGHT - (INPUT_CONTAINER_HEIGHT + HEADER_HEIGHT),
-            TOTAL_HEIGHT,
-        ],
-        outputRange: [
-            colors.transparent,
-            colors.transparent,
-            colors.transparent,
-            colors.white,
-        ],
-        extrapolate: 'clamp',
-    });
+        await wait(5);
 
+        if (offsetY >= HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT) {
+            if (!isScrollReachedTop) {
+                setIsScrollReachedTop(true);
+            }
+        } else if (offsetY <= HEADER_HEIGHT + HEADER_HEIGHT) {
+            if (isScrollReachedTop) {
+                setIsScrollReachedTop(false);
+            }
+        }
+    };
     const onScroll = Animated.event(
         [
             {
                 nativeEvent: {
-                    contentOffset: { y: scrollYValue },
+                    contentOffset: { y: scrollYAnimatedValue },
                 },
             },
         ],
-        // { useNativeDriver: true },
+        {
+            listener: onScrollListener,
+        },
     );
-
     const renderItem = ({ index }) => {
-        const paddingTop = index === 0 ? 20 : 0;
-
         return (
-            <View style={[styles.itemContainer, { paddingTop }]}>
-                <View style={styles.item} />
+            <View style={styles.item}>
+                <Text>{index}</Text>
             </View>
         );
     };
@@ -142,7 +156,25 @@ const Example1Screen = ({ navigation }) => {
     }, []);
 
     return (
-        <View style={styles.screen}>
+        <View style={styles.container}>
+            <StatusBar
+                barStyle={isScrollReachedTop ? 'dark-content' : 'light-content'}
+                animated
+            />
+
+            <Animated.View
+                style={[
+                    styles.header,
+                    { backgroundColor: animatedBackgroundColorHeader },
+                ]}
+                pointerEvents="box-none">
+                <TouchableOpacity
+                    style={[styles.headerIconContainer]}
+                    onPress={onPress}>
+                    <View style={styles.headerIcon} />
+                </TouchableOpacity>
+            </Animated.View>
+
             <SearchInput
                 style={{
                     ...styles.inputContainer,
@@ -157,49 +189,38 @@ const Example1Screen = ({ navigation }) => {
 
             <Animated.View
                 style={[
-                    styles.background,
+                    styles.headerBackground,
                     {
                         transform: [
                             {
-                                translateY: animatedTranslateYBackground,
+                                translateY: animatedTranslateYHeaderBackground,
                             },
                             {
-                                scale: animatedScaleBackground,
+                                scale: animatedScaleHeaderBackground,
                             },
                             {
-                                scaleY: animatedScaleYBackground,
+                                scaleY: animatedScaleYHeaderBackground,
                             },
                         ],
                     },
                 ]}>
                 <Image
-                    style={styles.image}
-                    resizeMode="cover"
                     source={{
                         uri: 'https://picsum.photos/800/400',
                     }}
+                    style={styles.headerBackgroundImage}
                 />
                 <Animated.View
                     style={[
-                        styles.overlay,
-                        { opacity: animatedOpacityOverlay },
+                        styles.headerBackgroundOverlay,
+                        { opacity: animatedOpacityHeaderBackgroundOverlay },
                     ]}
                 />
-            </Animated.View>
-
-            <Animated.View
-                style={[
-                    styles.header,
-                    { backgroundColor: animatedBackgroundColorHeader },
-                ]}>
                 <Animated.Text
                     style={[
-                        styles.headerText,
+                        styles.headerBackgroundTitle,
                         {
                             transform: [
-                                {
-                                    translateY: animatedTranslateYTitle,
-                                },
                                 {
                                     scale: animatedScaleTitle,
                                 },
@@ -208,104 +229,82 @@ const Example1Screen = ({ navigation }) => {
                     ]}>
                     Header Title
                 </Animated.Text>
-
-                <Animated.View
-                    style={[
-                        styles.iconContainer,
-                        {
-                            // transform: [
-                            //     {
-                            //         scale: animatedScaleIconContainer,
-                            //     },
-                            // ],
-                        },
-                    ]}>
-                    <TouchableOpacity onPress={onPress}>
-                        <View style={styles.icon} />
-                    </TouchableOpacity>
-                </Animated.View>
             </Animated.View>
 
-            <View style={styles.container}>
-                <Animated.FlatList
-                    style={styles.flatList}
-                    contentContainerStyle={styles.flatListContentContainer}
-                    onScroll={onScroll}
-                    scrollEventThrottle={16}
-                    showsVerticalScrollIndicator={false}
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={keyExtractor}
-                    keyboardDismissMode="on-drag"
-                    initialNumToRender={8}
-                    maxToRenderPerBatch={15}
-                    updateCellsBatchingPeriod={30}
-                />
-            </View>
+            <Animated.FlatList
+                contentContainerStyle={styles.scrollViewContentContainer}
+                onScroll={onScroll}
+                data={data}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
+                showsVerticalScrollIndicator={false}
+                keyboardDismissMode="on-drag"
+                initialNumToRender={6}
+                maxToRenderPerBatch={10}
+                updateCellsBatchingPeriod={30}
+                scrollEventThrottle={16}
+            />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    screen: {
+    container: {
         flex: 1,
         backgroundColor: colors.white,
     },
-    container: {
-        flex: 1,
+    scrollViewContentContainer: {
+        marginTop: HEADER_BACKGROUND_HEIGHT,
+        backgroundColor: colors.white,
+        paddingTop: 10,
+        paddingBottom: HEADER_BACKGROUND_HEIGHT,
+        paddingHorizontal: 20,
     },
-    background: {
-        ...StyleSheet.absoluteFillObject,
-        height: TOTAL_HEIGHT,
-    },
-    image: {
-        ...StyleSheet.absoluteFillObject,
-    },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: colors.blackOpacity,
-    },
-    header: {
-        height: HEADER_HEIGHT,
-        paddingTop: STATUS_BAR_HEIGHT,
+    item: {
+        borderRadius: 10,
+        marginVertical: 10,
+        height: 100,
+        backgroundColor: colors.grey,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    headerText: {
-        fontSize: 28,
-        color: colors.white,
+    header: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10,
+        height: HEADER_HEIGHT,
     },
-    flatList: {
-        flex: 1,
-    },
-    flatListContentContainer: {
-        paddingTop: HERO_HEIGHT,
-        paddingBottom: 30,
-    },
-    itemContainer: {
-        width: '100%',
-        backgroundColor: colors.white,
-        paddingBottom: 10,
-        paddingHorizontal: 10,
-    },
-    item: {
-        height: 50,
-        width: '100%',
-        backgroundColor: colors.grey,
-    },
-    iconContainer: {
+    headerIconContainer: {
         position: 'absolute',
         top: STATUS_BAR_HEIGHT + 10,
         right: 20,
-        zIndex: 10,
     },
-    icon: {
+    headerIcon: {
         width: 30,
         height: 30,
         backgroundColor: colors.grey,
     },
     inputContainer: {
         top: STATUS_BAR_HEIGHT + 5,
+    },
+    headerBackground: {
+        ...StyleSheet.absoluteFillObject,
+        height: HEADER_BACKGROUND_HEIGHT,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    headerBackgroundOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: colors.blackOpacity,
+    },
+    headerBackgroundImage: {
+        ...StyleSheet.absoluteFillObject,
+    },
+    headerBackgroundTitle: {
+        fontSize: 28,
+        color: colors.white,
     },
 });
 
