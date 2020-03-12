@@ -57,10 +57,10 @@ const Example3Screen = ({ navigation }) => {
     );
     const animatedOpacityHeaderBackgroundOverlay = scrollYAnimatedValue.interpolate(
         {
-            inputRange: [0, HEADER_BACKGROUND_HEIGHT],
+            inputRange: [0, HEADER_BACKGROUND_HEIGHT / 2],
             outputRange: [1, 0],
             extrapolate: 'clamp',
-            useNativeDriver: true,
+            // useNativeDriver: true,
         },
     );
 
@@ -76,14 +76,8 @@ const Example3Screen = ({ navigation }) => {
             0,
             HEADER_BACKGROUND_HEIGHT / 2,
             HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
-            HEADER_BACKGROUND_HEIGHT - STATUS_BAR_HEIGHT,
         ],
-        outputRange: [
-            colors.transparent,
-            colors.transparent,
-            colors.transparent,
-            colors.white,
-        ],
+        outputRange: [colors.transparent, colors.transparent, colors.white],
         extrapolate: 'clamp',
     });
 
