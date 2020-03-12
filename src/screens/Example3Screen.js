@@ -147,7 +147,8 @@ const Example3Screen = ({ navigation }) => {
                 style={[
                     styles.header,
                     { backgroundColor: animatedBackgroundColorHeader },
-                ]}>
+                ]}
+                pointerEvents="box-none">
                 <TouchableOpacity
                     style={[styles.headerIconContainer]}
                     onPress={onPress}>

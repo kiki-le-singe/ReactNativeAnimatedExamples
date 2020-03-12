@@ -9,7 +9,9 @@ const SearchInput = ({ style }) => {
     const _onChangeText = text => onChangeText(text);
 
     return (
-        <Animated.View style={[styles.inputContainer, { ...style }]}>
+        <Animated.View
+            pointerEvents="box-none"
+            style={[styles.inputContainer, { ...style }]}>
             <TextInput
                 style={styles.input}
                 placeholder="Placeholder"
