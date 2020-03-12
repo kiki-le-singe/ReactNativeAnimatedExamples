@@ -2,7 +2,7 @@
  * @flow
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     StyleSheet,
     View,
@@ -25,6 +25,7 @@ import SearchInput from '../components/SearchInput';
 const Example1Screen = ({ navigation }) => {
     const [data, setData] = useState([]);
     const [isScrollReachedTop, setIsScrollReachedTop] = useState(false);
+    const flatlistRef = useRef(null);
 
     const scrollYAnimatedValue = new Animated.Value(0);
 
@@ -146,6 +147,14 @@ const Example1Screen = ({ navigation }) => {
     };
     const keyExtractor = (item, index) => `item_${index}`;
     const onPress = () => navigation.goBack();
+    const onFocus = () => {
+        if (scrollYAnimatedValue.__getValue() <= HEADER_BACKGROUND_HEIGHT) {
+            flatlistRef.current.getNode().scrollToOffset({
+                offset: HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
+                animated: true,
+            });
+        }
+    };
 
     useEffect(() => {
         const array = [];
@@ -185,6 +194,7 @@ const Example1Screen = ({ navigation }) => {
                     ],
                     width: animatedWidthInputContainer,
                 }}
+                onFocus={onFocus}
             />
 
             <Animated.View
@@ -232,6 +242,7 @@ const Example1Screen = ({ navigation }) => {
             </Animated.View>
 
             <Animated.FlatList
+                ref={flatlistRef}
                 contentContainerStyle={styles.scrollViewContentContainer}
                 onScroll={onScroll}
                 data={data}

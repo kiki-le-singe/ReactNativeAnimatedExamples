@@ -4,9 +4,10 @@ import { StyleSheet, Animated, TextInput } from 'react-native';
 import { INPUT_CONTAINER_HEIGHT } from '../constants';
 import colors from '../utils/colors';
 
-const SearchInput = ({ style }) => {
+const SearchInput = ({ style, onFocus }) => {
     const [value, onChangeText] = React.useState('');
     const _onChangeText = text => onChangeText(text);
+    const _onFocus = () => onFocus();
 
     return (
         <Animated.View
@@ -16,6 +17,7 @@ const SearchInput = ({ style }) => {
                 style={styles.input}
                 placeholder="Placeholder"
                 onChangeText={_onChangeText}
+                onFocus={_onFocus}
                 value={value}
             />
         </Animated.View>
