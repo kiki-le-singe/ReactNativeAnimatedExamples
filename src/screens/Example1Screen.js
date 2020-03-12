@@ -150,7 +150,7 @@ const Example1Screen = ({ navigation }) => {
     const onFocus = () => {
         if (scrollYAnimatedValue.__getValue() <= HEADER_BACKGROUND_HEIGHT) {
             flatlistRef.current.getNode().scrollToOffset({
-                offset: HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
+                offset: HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT + 5,
                 animated: true,
             });
         }
