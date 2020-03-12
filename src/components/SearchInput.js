@@ -16,6 +16,7 @@ const SearchInput = ({ style, onFocus }) => {
             <TextInput
                 style={styles.input}
                 placeholder="Placeholder"
+                placeholderTextColor={colors.grey}
                 onChangeText={_onChangeText}
                 onFocus={_onFocus}
                 value={value}
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
         height: '100%',
         borderColor: colors.grey,
         backgroundColor: colors.white,
+        color: colors.black,
         borderWidth: 1,
         paddingHorizontal: 10,
     },
