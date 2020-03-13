@@ -8,6 +8,10 @@ const HomeScreen = ({ navigation }) => {
                 title="Example 1"
                 onPress={() => navigation.navigate('Example1')}
             />
+            <Button
+                title="Example 2 (useNativeDriver: true)"
+                onPress={() => navigation.navigate('Example2')}
+            />
         </View>
     );
 };
