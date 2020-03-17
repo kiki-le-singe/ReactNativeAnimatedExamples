@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Animated, TextInput } from 'react-native';
 
-import { INPUT_CONTAINER_HEIGHT } from '../constants';
+import { INPUT_CONTAINER_HEIGHT, STATUS_BAR_HEIGHT } from '../constants';
 import colors from '../utils/colors';
 
 const SearchInput = ({ style, onFocus }) => {

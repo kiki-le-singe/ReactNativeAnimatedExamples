@@ -19,6 +19,7 @@ import {
     HEADER_BACKGROUND_HEIGHT,
     STATUS_BAR_HEIGHT,
     HEADER_HEIGHT,
+    INPUT_CONTAINER_HEIGHT,
 } from '../constants';
 import SearchInput from '../components/SearchInput';
 
@@ -92,9 +93,9 @@ const Example1Screen = ({ navigation }) => {
             HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
         ],
         outputRange: [
-            HEADER_BACKGROUND_HEIGHT * 2 - HEADER_HEIGHT,
-            HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
+            HEADER_BACKGROUND_HEIGHT,
             0,
+            -HEADER_BACKGROUND_HEIGHT + HEADER_HEIGHT,
         ],
         extrapolateRight: 'clamp',
         extrapolateLeft: 'extend',
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.grey,
     },
     inputContainer: {
-        top: STATUS_BAR_HEIGHT + 5,
+        top: HEADER_BACKGROUND_HEIGHT - INPUT_CONTAINER_HEIGHT - 15,
     },
     headerBackground: {
         ...StyleSheet.absoluteFillObject,
