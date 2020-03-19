@@ -25,7 +25,6 @@ import SearchInput from '../components/SearchInput';
 
 const Example1Screen = ({ navigation }) => {
     const [data, setData] = useState([]);
-    const [isScrollReachedTop, setIsScrollReachedTop] = useState(false);
     const flatlistRef = useRef(null);
 
     const scrollYAnimatedValue = new Animated.Value(0);
@@ -115,16 +114,10 @@ const Example1Screen = ({ navigation }) => {
     const onScrollListener = async event => {
         const offsetY = event.nativeEvent.contentOffset.y;
 
-        await wait(5);
-
         if (offsetY >= HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT) {
-            if (!isScrollReachedTop) {
-                setIsScrollReachedTop(true);
-            }
+            StatusBar.setBarStyle('dark-content', true);
         } else if (offsetY <= HEADER_HEIGHT + HEADER_HEIGHT) {
-            if (isScrollReachedTop) {
-                setIsScrollReachedTop(false);
-            }
+            StatusBar.setBarStyle('light-content', true);
         }
     };
     const onScroll = Animated.event(
@@ -167,10 +160,7 @@ const Example1Screen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <StatusBar
-                barStyle={isScrollReachedTop ? 'dark-content' : 'light-content'}
-                animated
-            />
+            <StatusBar barStyle="light-content" animated />
 
             <Animated.View
                 style={[
