@@ -1,6 +1,6 @@
-import { getStatusBarHeight } from 'react-native-status-bar-height';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
-import { vh } from './utils/units';
+import {vh} from './utils/units';
 
 export const STATUS_BAR_HEIGHT = getStatusBarHeight();
 export const HEADER_HEIGHT = 60 + STATUS_BAR_HEIGHT;
