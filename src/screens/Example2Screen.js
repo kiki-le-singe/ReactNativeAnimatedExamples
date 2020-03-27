@@ -155,6 +155,7 @@ const Example2Screen = ({navigation}) => {
         maxToRenderPerBatch={10}
         updateCellsBatchingPeriod={30}
         scrollEventThrottle={16}
+        overScrollMode="never" // Android
       />
     </View>
   );
