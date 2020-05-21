@@ -88,13 +88,23 @@ const Example1Screen = ({navigation}) => {
     extrapolateLeft: 'extend',
   });
 
-  const animatedWidthInputContainer = scrollYAnimatedValue.interpolate({
+  const animatedTranslateXInputContainer = scrollYAnimatedValue.interpolate({
     inputRange: [
       0,
       HEADER_BACKGROUND_HEIGHT / 2,
       HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
     ],
-    outputRange: ['100%', '100%', '85%'],
+    outputRange: [0, 0, -25],
+    extrapolate: 'clamp',
+  });
+
+  const animatedScaleYInputContainer = scrollYAnimatedValue.interpolate({
+    inputRange: [
+      0,
+      HEADER_BACKGROUND_HEIGHT / 2,
+      HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
+    ],
+    outputRange: [1, 1, 0.85],
     extrapolate: 'clamp',
   });
 
@@ -146,6 +156,8 @@ const Example1Screen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" animated />
+
       <Animated.View
         style={[
           styles.header,
@@ -168,8 +180,13 @@ const Example1Screen = ({navigation}) => {
             {
               translateY: animatedTranslateYInputContainer,
             },
+            {
+              translateX: animatedTranslateXInputContainer,
+            },
+            {
+              scaleX: animatedScaleYInputContainer,
+            },
           ],
-          width: animatedWidthInputContainer,
         }}
         onFocus={onFocus}
       />
