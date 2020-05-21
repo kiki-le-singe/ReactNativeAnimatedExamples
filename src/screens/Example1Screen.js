@@ -33,13 +33,11 @@ const Example1Screen = ({navigation}) => {
     outputRange: [2, 1],
     extrapolateRight: 'clamp',
     extrapolateLeft: 'extend',
-    // useNativeDriver: true,
   });
   const animatedScaleYHeaderBackground = scrollYAnimatedValue.interpolate({
     inputRange: [0, HEADER_BACKGROUND_HEIGHT],
     outputRange: [1, 0.8],
     extrapolate: 'clamp',
-    // useNativeDriver: true,
   });
   const animatedTranslateYHeaderBackground = scrollYAnimatedValue.interpolate({
     inputRange: [-HEADER_BACKGROUND_HEIGHT, 0, HEADER_BACKGROUND_HEIGHT],
@@ -50,14 +48,12 @@ const Example1Screen = ({navigation}) => {
     ],
     extrapolateRight: 'clamp',
     extrapolateLeft: 'extend',
-    // useNativeDriver: true,
   });
   const animatedOpacityHeaderBackgroundOverlay = scrollYAnimatedValue.interpolate(
     {
       inputRange: [0, HEADER_BACKGROUND_HEIGHT / 2],
       outputRange: [1, 0],
       extrapolate: 'clamp',
-      // useNativeDriver: true,
     },
   );
 
@@ -65,16 +61,15 @@ const Example1Screen = ({navigation}) => {
     inputRange: [0, HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT],
     outputRange: [1.5, 0],
     extrapolate: 'clamp',
-    // useNativeDriver: true,
   });
 
-  const animatedBackgroundColorHeader = scrollYAnimatedValue.interpolate({
+  const animatedOpacityHeader = scrollYAnimatedValue.interpolate({
     inputRange: [
       0,
       HEADER_BACKGROUND_HEIGHT / 2,
       HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT,
     ],
-    outputRange: [colors.transparent, colors.transparent, colors.white],
+    outputRange: [0, 0, 1],
     extrapolate: 'clamp',
   });
 
@@ -91,7 +86,6 @@ const Example1Screen = ({navigation}) => {
     ],
     extrapolateRight: 'clamp',
     extrapolateLeft: 'extend',
-    // useNativeDriver: true,
   });
 
   const animatedWidthInputContainer = scrollYAnimatedValue.interpolate({
@@ -104,12 +98,12 @@ const Example1Screen = ({navigation}) => {
     extrapolate: 'clamp',
   });
 
-  const onScrollListener = async event => {
+  const onScrollListener = async (event) => {
     const offsetY = event.nativeEvent.contentOffset.y;
 
     if (offsetY >= HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT) {
       StatusBar.setBarStyle('dark-content', true);
-    } else if (offsetY <= HEADER_HEIGHT + HEADER_HEIGHT) {
+    } else {
       StatusBar.setBarStyle('light-content', true);
     }
   };
@@ -123,7 +117,7 @@ const Example1Screen = ({navigation}) => {
     ],
     {
       listener: onScrollListener,
-      useNativeDriver: false,
+      useNativeDriver: true,
     },
   );
   const renderItem = ({index}) => {
@@ -136,12 +130,10 @@ const Example1Screen = ({navigation}) => {
   const keyExtractor = (item, index) => `item_${index}`;
   const onPress = () => navigation.goBack();
   const onFocus = () => {
-    if (scrollYAnimatedValue.__getValue() <= HEADER_BACKGROUND_HEIGHT) {
-      flatlistRef.current.scrollToOffset({
-        offset: HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT + 5,
-        animated: true,
-      });
-    }
+    flatlistRef.current.scrollToOffset({
+      offset: HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT + 5,
+      animated: true,
+    });
   };
 
   useEffect(() => {
@@ -154,14 +146,14 @@ const Example1Screen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" animated />
-
       <Animated.View
         style={[
           styles.header,
-          {backgroundColor: animatedBackgroundColorHeader},
+          {backgroundColor: colors.white, opacity: animatedOpacityHeader},
         ]}
-        pointerEvents="box-none">
+        pointerEvents="box-none"
+      />
+      <Animated.View style={styles.header} pointerEvents="box-none">
         <TouchableOpacity
           style={[styles.headerIconContainer]}
           onPress={onPress}>
