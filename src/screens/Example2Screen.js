@@ -98,22 +98,22 @@ const Example2Screen = ({navigation}) => {
           <View style={styles.headerIcon} />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={{
-            transform: [
-              {
-                translateY: animatedTranslateYTitle,
-              },
-              {
-                scale: animatedScaleTitle,
-              },
-            ],
-          }}
-          onPress={() => alert('Hey !')}>
-          <Animated.Text style={styles.headerTitle}>
-            Clickable Title
-          </Animated.Text>
-        </TouchableOpacity>
+        <Animated.Text
+          style={[
+            styles.headerTitle,
+            {
+              transform: [
+                {
+                  translateY: animatedTranslateYTitle,
+                },
+                {
+                  scale: animatedScaleTitle,
+                },
+              ],
+            },
+          ]}>
+          Title
+        </Animated.Text>
       </View>
 
       <Animated.View
