@@ -111,6 +111,12 @@ const Example1Screen = ({navigation}) => {
   const onScrollListener = async (event) => {
     const offsetY = event.nativeEvent.contentOffset.y;
 
+    // Tips:
+    // When we set `useNativeDriver` to `true`, we can't use `scrollYAnimatedValue.__getValue()` because it's equal to `0`.
+    // Then to get the scroll value to use it anywhere, we have to set a state.
+    // https://reactnative.dev/docs/animations.html#responding-to-the-current-animation-value
+    // setScrollYValue(offsetY);
+
     if (offsetY >= HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT) {
       StatusBar.setBarStyle('dark-content', true);
     } else {
