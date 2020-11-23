@@ -4,4 +4,5 @@ export default {
   transparent: 'transparent',
   blackOpacity: 'rgba(0,0,0,0.25)',
   grey: '#D4D4D4',
+  twitter: '#1DA1F2',
 };
