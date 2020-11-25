@@ -20,7 +20,7 @@ const HomeScreen = ({navigation}) => {
         onPress={() => navigation.navigate('Example2')}
       />
       <Button
-        title='Example 3 (Like Twitter "Almost")'
+        title="Example 3"
         onPress={() => navigation.navigate('Example3')}
       />
     </View>

@@ -19,6 +19,7 @@ import {vh} from '../utils/units';
 
 const HEADER_BACKGROUND_HEIGHT = vh(16);
 const SCROLL_SPAN = HEADER_BACKGROUND_HEIGHT - HEADER_HEIGHT;
+const profilePictureSize = 40;
 
 const TITLE = 'My Title';
 
@@ -53,20 +54,21 @@ const Example3Screen = ({navigation}) => {
   });
   const animatedTranslateYTitle = scrollYAnimatedValue.interpolate({
     inputRange: [0, SCROLL_SPAN + HEADER_BACKGROUND_HEIGHT],
-    outputRange: [SCROLL_SPAN + 10, 0],
+    outputRange: [SCROLL_SPAN + profilePictureSize, 0],
     extrapolate: 'clamp',
   });
 
   const animatedTranslateYProfilePicture = scrollYAnimatedValue.interpolate({
     inputRange: [0, SCROLL_SPAN],
-    outputRange: [0, SCROLL_SPAN - 15],
+    outputRange: [0, profilePictureSize / 4],
     extrapolate: 'clamp',
   });
 
   const animatedScaleProfilePicture = scrollYAnimatedValue.interpolate({
-    inputRange: [0, SCROLL_SPAN],
-    outputRange: [1.5, 1],
-    extrapolate: 'clamp',
+    inputRange: [-SCROLL_SPAN, 0, SCROLL_SPAN],
+    outputRange: [1.65, 1.5, 1],
+    extrapolateRight: 'clamp',
+    extrapolateLeft: 'extend',
   });
 
   const onScroll = Animated.event(
@@ -205,7 +207,6 @@ const styles = StyleSheet.create({
   scrollViewContentContainer: {
     marginTop: SCROLL_SPAN,
     backgroundColor: colors.black,
-    // paddingTop: 50,
     paddingTop: 10,
     paddingBottom: SCROLL_SPAN,
     paddingHorizontal: 20,
@@ -219,13 +220,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   profilePicture: {
-    width: 40,
-    height: 40,
-    borderRadius: 40,
+    width: profilePictureSize,
+    height: profilePictureSize,
+    borderRadius: profilePictureSize,
     borderWidth: 2,
     borderColor: colors.black,
     position: 'absolute',
-    top: -30,
+    top: -profilePictureSize / 2,
     left: 8,
     zIndex: 10,
   },
@@ -261,9 +262,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   listHeader: {
-    backgroundColor: 'red',
-    paddingTop: 32,
-    // marginTop: 32,
+    paddingTop: 35,
+    marginBottom: 10,
   },
   listHeaderTitle: {
     fontSize: 24,
