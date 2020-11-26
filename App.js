@@ -15,6 +15,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import Example1Screen from './src/screens/Example1Screen';
 import Example2Screen from './src/screens/Example2Screen';
 import Example3Screen from './src/screens/Example3Screen';
+import Example4Screen from './src/screens/Example4Screen';
 
 const Stack = createStackNavigator();
 
@@ -50,6 +51,7 @@ const App = () => {
           }}
           component={Example3Screen}
         />
+        <Stack.Screen name="Example4" component={Example4Screen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
