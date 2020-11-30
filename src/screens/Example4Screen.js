@@ -2,40 +2,99 @@
  * @flow
  */
 
-import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  View,
-  Animated,
-  Image,
-  Text,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {StyleSheet, View, TouchableHighlight, StatusBar} from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import colors from '../utils/colors';
+import BulletItemMenu from '../components/BulletItemMenu';
 
-const buttonsContainerSize = 100;
-const buttonsSize = 20;
-const buttonPosition = buttonsContainerSize / 2 - buttonsSize / 2;
+const buttonsData = [0, 1, 2, 3, 4, 5, 6, 7];
+const buttonsContainerSize = 180;
 
 const Example4Screen = ({navigation}) => {
+  const [state, setState] = useState({disable: false, isOpen: false});
+  const handleMainButtonRef = useRef(null);
+  const handleButtonsContainerRef = useRef(null);
+
+  const playAnimations = async () => {
+    setState({disable: true});
+
+    await handleMainButtonRef.current.pulse(800);
+    await handleButtonsContainerRef.current.zoomIn(800);
+    await handleButtonsContainerRef.current.animate({
+      0: {
+        transform: [
+          {
+            rotate: '0deg',
+          },
+        ],
+      },
+      1: {
+        transform: [
+          {
+            rotate: '90deg',
+          },
+        ],
+      },
+    });
+
+    setState({disable: false, isOpen: true});
+  };
+  const playReverseAnimations = async () => {
+    setState({disable: true});
+
+    await handleMainButtonRef.current.pulse(500);
+    await handleButtonsContainerRef.current.animate(
+      {
+        0: {
+          transform: [
+            {
+              rotate: '90deg',
+            },
+          ],
+        },
+        1: {
+          transform: [
+            {
+              rotate: '0deg',
+            },
+          ],
+        },
+      },
+      500,
+    );
+    await handleButtonsContainerRef.current.zoomOut(500);
+
+    setState({disable: false, isOpen: false});
+  };
+  const onPress = () =>
+    state.isOpen ? playReverseAnimations() : playAnimations();
+  const renderButtons = () =>
+    buttonsData.map((value) => (
+      <BulletItemMenu key={`button_${value}`} value={value} />
+    ));
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
 
       <View style={styles.actionsContainer}>
-        <View style={styles.buttonsContainer}>
-          <View style={[styles.button, styles.button1]} />
-          <View style={[styles.button, styles.button2]} />
-          <View style={[styles.button, styles.button3]} />
-          <View style={[styles.button, styles.button4]} />
-          <View style={[styles.button, styles.button5]} />
-          <View style={[styles.button, styles.button6]} />
-          <View style={[styles.button, styles.button7]} />
-          <View style={[styles.button, styles.button8]} />
-        </View>
-        <View style={styles.mainButton} />
+        <Animatable.View
+          ref={handleButtonsContainerRef}
+          style={styles.buttonsContainer}>
+          {renderButtons()}
+        </Animatable.View>
+
+        <TouchableHighlight
+          disabled={state.disable}
+          onPress={onPress}
+          style={styles.TouchableHighlight}>
+          <Animatable.View
+            ref={handleMainButtonRef}
+            style={styles.mainButton}
+          />
+        </TouchableHighlight>
       </View>
     </View>
   );
@@ -46,70 +105,31 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.black,
   },
   actionsContainer: {
     width: 220,
     height: 220,
-    backgroundColor: colors.black,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonsContainer: {
     width: buttonsContainerSize,
     height: buttonsContainerSize,
-    backgroundColor: colors.transparent,
+    borderRadius: buttonsContainerSize,
     position: 'absolute',
     zIndex: 5,
+    transform: [{scale: 0}],
   },
-  button: {
-    width: 20,
-    height: 20,
-    position: 'absolute',
-    backgroundColor: 'green',
-  },
-  button1: {
-    backgroundColor: 'blue',
-    left: 0,
-  },
-  button2: {
-    backgroundColor: 'purple',
-    left: buttonPosition,
-  },
-  button3: {
-    backgroundColor: 'yellow',
-    right: 0,
-  },
-  button4: {
-    backgroundColor: 'pink',
-    right: 0,
-    top: buttonPosition,
-  },
-  button5: {
-    backgroundColor: 'brown',
-    right: 0,
-    bottom: 0,
-  },
-  button6: {
-    backgroundColor: 'magenta',
-    right: buttonPosition,
-    bottom: 0,
-  },
-  button7: {
-    backgroundColor: 'orange',
-    left: 0,
-    bottom: 0,
-  },
-  button8: {
-    left: 0,
-    top: buttonPosition,
-  },
-  mainButton: {
-    width: 150,
-    height: 150,
-    backgroundColor: colors.twitter,
-    borderRadius: 150,
+  TouchableHighlight: {
     position: 'absolute',
     zIndex: 10,
+  },
+  mainButton: {
+    width: 70,
+    height: 70,
+    backgroundColor: colors.twitter,
+    borderRadius: 70,
   },
 });
 
