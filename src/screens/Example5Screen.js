@@ -86,9 +86,6 @@ const Example5Screen = () => {
         keyExtractor={keyExtractor}
         contentContainerStyle={styles.flatListContentContainer}
         showsVerticalScrollIndicator={false}
-        initialNumToRender={8}
-        maxToRenderPerBatch={10}
-        updateCellsBatchingPeriod={30}
       />
     </SafeAreaView>
   );
