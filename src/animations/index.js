@@ -14,7 +14,7 @@ Animatable.initializeRegistryWithDefinitions({
   },
   myPulseList: {
     0: {
-      scale: 0.2,
+      scale: 0,
     },
     0.5: {
       scale: 1.1,
