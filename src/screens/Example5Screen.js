@@ -51,7 +51,7 @@ const Example5Screen = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
 
-      <ScrollView horizontal>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <Button title="FadeIn" onPress={() => updateAnimation('fadeIn')} />
         <Button title="FadeInUp" onPress={() => updateAnimation('fadeInUp')} />
         <Button
