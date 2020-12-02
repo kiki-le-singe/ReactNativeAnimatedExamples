@@ -11,6 +11,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
+import './src/animations';
 import HomeScreen from './src/screens/HomeScreen';
 import Example1Screen from './src/screens/Example1Screen';
 import Example2Screen from './src/screens/Example2Screen';

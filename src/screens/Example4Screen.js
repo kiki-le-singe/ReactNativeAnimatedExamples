@@ -20,7 +20,7 @@ const Example4Screen = ({navigation}) => {
   const playAnimations = async () => {
     setState({disable: true});
 
-    await handleMainButtonRef.current.pulse(800);
+    await handleMainButtonRef.current.myPulse(650);
     await handleButtonsContainerRef.current.zoomIn(800);
     await handleButtonsContainerRef.current.animate({
       0: {
@@ -44,7 +44,7 @@ const Example4Screen = ({navigation}) => {
   const playReverseAnimations = async () => {
     setState({disable: true});
 
-    await handleMainButtonRef.current.pulse(500);
+    await handleMainButtonRef.current.myPulse(500);
     await handleButtonsContainerRef.current.animate(
       {
         0: {

@@ -13,7 +13,7 @@ const buttonPosition = buttonsContainerSize / 2 - buttonsSize / 2;
 const BulletItemMenu = ({value}) => {
   const bulletItemRef = useRef(null);
 
-  const onPress = () => bulletItemRef.current.pulse(800);
+  const onPress = () => bulletItemRef.current.myPulse(800);
 
   return (
     <TouchableHighlight
